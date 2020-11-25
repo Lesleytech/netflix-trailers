@@ -1,0 +1,22 @@
+.welcome {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+}
+
+.welcome span {
+    color: #e50914;
+}
+
+.welcome h4 {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: #fff;
+}
