@@ -54,11 +54,9 @@
   left: 0;
   right: 0;
   height: 7.4rem;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    rgba(37, 37, 37, 0.61),
-    #111
-  );
+  background: linear-gradient(180deg,
+      transparent,
+      rgba(37, 37, 37, 0.61),
+      #111);
   z-index: 1;
 }

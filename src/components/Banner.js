@@ -4,8 +4,9 @@ import requests from '../api/request';
 import axios from '../api/axios';
 
 import './Banner.css';
+import { truncate } from '../helper';
 
-export default function Banner({ handleClick }) {
+export default function Banner({ onClick }) {
   const [movie, setMovie] = useState({});
 
   useEffect(() => {
@@ -19,10 +20,6 @@ export default function Banner({ handleClick }) {
     }
     fetchData();
   }, []);
-
-  function truncate(str, n) {
-    return str?.length > n ? str.substr(0, n - 1) + '...' : str;
-  }
 
   return (
     <header
@@ -40,7 +37,7 @@ export default function Banner({ handleClick }) {
         <div className='banner_btns'>
           <button
             className='banner_btn'
-            onClick={handleClick}
+            onClick={onClick}
             title={movie?.title || movie?.name}
           >
             Play

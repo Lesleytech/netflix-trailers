@@ -1,0 +1,73 @@
+.movie-container {
+    position: relative;
+    height: 250px;
+    width: 166.66px;
+    margin-right: 7px;
+}
+
+.movie-img {
+    width: 100%;
+    height: 100%;
+    transition: transform 300ms ease-in-out;
+    animation: appear 1s ease;
+    cursor: pointer;
+    max-height: 250px;
+    object-fit: cover;
+}
+
+.movie-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(17, 17, 17, 0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    color: #e50914;
+    pointer-events: none;
+    animation: appear 0.1s linear;
+}
+
+.movie-overlay svg {
+    margin: -12px;
+    position: absolute;
+    animation: grow 0.1s ease-in-out;
+}
+
+.movie-overlay div {
+    animation: grow 0.1s ease-in-out;
+    background-color: #fefefe;
+    border-radius: 50%;
+    height: 36px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.movie-img-loader {
+    border-radius: 0px !important;
+    bottom: 4px;
+    position: relative;
+}
+
+@media (min-width: 600px) {
+    .movie-img:hover+.movie-overlay {
+        display: flex;
+    }
+}
+
+@keyframes grow {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

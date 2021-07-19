@@ -1,6 +1,13 @@
 .row {
-  margin: 0 10px;
+  margin-bottom: 40px;
+  padding: 0 10px;
   color: #fff;
+  min-height: 296px;
+  min-width: 98vw;
+}
+
+.row h2 {
+  margin-bottom: 10px;
 }
 
 .row_posters {
@@ -13,26 +20,43 @@
   display: none;
 }
 
-.row_poster {
-  object-fit: contain;
-  width: 100%;
-  max-height: 100px;
-  transition: transform 300ms ease-in-out;
-  margin-right: 10px;
-  animation: appear 1s ease;
-  cursor: pointer;
-}
-
-.row_poster:hover {
-  transform: scale(1.08);
-}
-
-.row_poster_lg {
+.menu-wrapper {
+  flex: 1;
   max-height: 250px;
 }
 
-.row_poster_lg:hover {
-  transform: scale(1.09);
+.arrow {
+  height: 100%;
+  border: none;
+  outline: none;
+  background-color: #1d1d1d;
+  color: rgba(255, 255, 255, 0.4);
+  height: 100%;
+  width: 30px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.arrow:hover {
+  background-color: #2b2b2b;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.scroll-menu-arrow {
+  height: 250px;
+  bottom: 2px;
+  position: relative;
+}
+
+.scroll-menu-arrow:first-child {
+  padding-right: 8px;
+}
+
+.scroll-menu-arrow:last-child {
+  padding-left: 8px;
 }
 
 @keyframes appear {

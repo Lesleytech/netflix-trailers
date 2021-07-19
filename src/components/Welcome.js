@@ -7,12 +7,11 @@ export default function Welcome({ setWelcome }) {
   useEffect(() => {
     var typed = new Typed('.text', {
       strings: [
-        'Coded by Lafen Lesley ^1000',
-        'with <span>💖</span> ^1000',
-        '😃 ^1000',
+        'Coded by ^700Lafen Lesley ^800 with <span>💖</span>^300.',
+        '^300😃^700',
       ],
-      typeSpeed: 15,
-      backSpeed: 15,
+      typeSpeed: 25,
+      fadeOut: true,
       onComplete: () => setWelcome(false),
     });
 
@@ -21,7 +20,7 @@ export default function Welcome({ setWelcome }) {
 
   return (
     <div className='welcome'>
-      <h4 className='text'></h4>
+      <p className='text' style={{ color: 'white' }}></p>
     </div>
   );
 }

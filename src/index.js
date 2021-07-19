@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { SkeletonTheme } from 'react-loading-skeleton';
+
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <SkeletonTheme color='#1d1d1d' highlightColor='#2b2b2b'>
+      <App />
+    </SkeletonTheme>
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Youtube from 'react-youtube';
 
 import Row from './components/Row';
@@ -10,10 +10,45 @@ import './App.css';
 import request from './api/request';
 import youtube from './api/youtube';
 import { YT_API_KEY } from './api/keys';
-import Welcome from './components/Welcome';
+import MovieDetails from './components/MovieDetails';
+
+const categories = [
+  {
+    title: 'NETFLIX ORIGINALS',
+    fetchUrl: request.fetchNetflixOriginals,
+  },
+  {
+    title: 'Trending Now',
+    fetchUrl: request.fetchTrending,
+  },
+  {
+    title: 'Top Rated',
+    fetchUrl: request.fetchTopRated,
+  },
+  {
+    title: 'Action Movies',
+    fetchUrl: request.fetchActionMovies,
+  },
+  {
+    title: 'Romance Movies',
+    fetchUrl: request.fetchRomanceMovies,
+  },
+  {
+    title: 'Comedy Movies',
+    fetchUrl: request.fetchComedyMovies,
+  },
+  {
+    title: 'Horror Movies',
+    fetchUrl: request.fetchHorrorMovies,
+  },
+  {
+    title: 'Documentaries',
+    fetchUrl: request.fetchDocumentaries,
+  },
+];
 
 export default function App() {
-  const [welcome, setWelcome] = useState(true);
+  const [movieBox, setMovieBox] = useState(null);
   const [isVideo, setIsVideo] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(true);
   const [trailerUrl, setTrailerUrl] = useState('');
@@ -21,7 +56,7 @@ export default function App() {
     window.innerWidth > 600 ? false : true
   );
 
-  const handleClick = async (e) => {
+  const handleClick = async (movieTitle) => {
     setIsVideo(true);
     setIsVideoLoading(true);
     const response = await youtube.get('search', {
@@ -29,12 +64,23 @@ export default function App() {
         part: 'snippet',
         maxResults: 1,
         key: YT_API_KEY,
-        q: e.target.title + ' trailer',
+        q: movieTitle + ' trailer',
       },
     });
 
     setTrailerUrl(response.data.items[0].id.videoId);
   };
+
+  const handleHover = useCallback(
+    ({ hover, movie }, event) => {
+      if (!hover || !movie || isMobile) return setMovieBox(null);
+
+      const position = { x: event.clientX, y: event.clientY };
+
+      setMovieBox({ movie, position });
+    },
+    [isMobile]
+  );
 
   const opts = {
     height: isMobile ? '230' : '390',
@@ -56,86 +102,45 @@ export default function App() {
 
   return (
     <div className='app'>
-      {welcome ? (
-        <Welcome setWelcome={setWelcome} />
-      ) : (
-        <>
-          <Nav
-            isVideo={isVideo}
-            isVideoLoading={isVideoLoading}
-            handleClick={() => {
+      <div>
+        <Nav
+          isVideo={isVideo}
+          isVideoLoading={isVideoLoading}
+          handleClick={() => {
+            setTrailerUrl('');
+            setIsVideo(false);
+          }}
+        />
+        <Banner onClick={handleClick} />
+        {categories.map(({ fetchUrl, title }, key) => (
+          <Row
+            title={title}
+            fetchUrl={fetchUrl}
+            onClick={handleClick}
+            onHover={handleHover}
+            isMobile={isMobile}
+            key={key}
+          />
+        ))}
+        {trailerUrl && (
+          <Youtube
+            videoId={trailerUrl}
+            className='movie_trailer'
+            opts={opts}
+            onEnd={() => {
               setTrailerUrl('');
               setIsVideo(false);
             }}
+            onReady={() => setIsVideoLoading(false)}
+            onError={() => setIsVideoLoading(false)}
+            onStateChange={() => setIsVideoLoading(false)}
+            containerClassName='youtube_player'
           />
-          <Banner handleClick={handleClick} />
-          <Row
-            title='NETFLIX ORIGINALS'
-            fetchUrl={request.fetchNetflixOriginals}
-            isLargeRow
-            handleClick={handleClick}
-            isMobile={isMobile}
-          />
-          <Row
-            title='Trending Now'
-            fetchUrl={request.fetchTrending}
-            handleClick={handleClick}
-            isMobile={isMobile}
-          />
-          <Row
-            title='Top Rated'
-            fetchUrl={request.fetchTopRated}
-            handleClick={handleClick}
-            isMobile={isMobile}
-          />
-          <Row
-            title='Action Movies'
-            fetchUrl={request.fetchActionMovies}
-            handleClick={handleClick}
-            isMobile={isMobile}
-          />
-          <Row
-            title='Comedy Movies'
-            fetchUrl={request.fetchComedyMovies}
-            handleClick={handleClick}
-            isMobile={isMobile}
-          />
-          <Row
-            title='Horror Movies'
-            fetchUrl={request.fetchHorrorMovies}
-            handleClick={handleClick}
-            isMobile={isMobile}
-          />
-          <Row
-            title='Romance Movies'
-            fetchUrl={request.fetchRomanceMovies}
-            handleClick={handleClick}
-            isMobile={isMobile}
-          />
-          <Row
-            title='Documentaries'
-            fetchUrl={request.fetchDocumentaries}
-            handleClick={handleClick}
-            isMobile={isMobile}
-          />
-
-          {trailerUrl && (
-            <Youtube
-              videoId={trailerUrl}
-              className='movie_trailer'
-              opts={opts}
-              onEnd={() => {
-                setTrailerUrl('');
-                setIsVideo(false);
-              }}
-              onReady={() => setIsVideoLoading(false)}
-              onError={() => setIsVideoLoading(false)}
-              onStateChange={() => setIsVideoLoading(false)}
-              containerClassName='youtube_player'
-            />
-          )}
-        </>
-      )}
+        )}
+        {movieBox && (
+          <MovieDetails movie={movieBox.movie} pos={movieBox.position} />
+        )}
+      </div>
     </div>
   );
 }
